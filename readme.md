@@ -26,11 +26,11 @@ cd /path/to/news-aggregator
 cp .env.example .env
 
 # Create database
-touch database/database.sqlite
+touch backend/database/database.sqlite
 
 # Update permissions
-chmod -R 0777 storage
-chmod -R 0777 bootstrap/cache
+chmod -R 0775 backend/storage
+chmod -R 0775 backend/bootstrap/cache
 
 # Build docker images
 docker-compose build

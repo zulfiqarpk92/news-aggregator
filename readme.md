@@ -23,7 +23,7 @@ git clone git@github.com:zulfiqarpk92/news-aggregator.git
 cd /path/to/news-aggregator
 
 # Copy the env file and add NEWS Sources API keys.
-cp .env.example .env
+cp backend/.env.example backend/.env
 
 # Create database
 touch backend/database/database.sqlite
@@ -40,7 +40,7 @@ docker run --rm -it --volume $(pwd)/backend:/app news-aggregator-backend compose
 docker run --rm -it --volume $(pwd)/frontend:/app news-aggregator-frontend npm install
 
 # Generate application key
-docker run --rm -it --volume $(pwd):/app news-aggregator-backend php artisan key:generate
+docker run --rm -it --volume $(pwd)/backend:/app news-aggregator-backend php artisan key:generate
 
 # Start the containers
 docker-compose up -d

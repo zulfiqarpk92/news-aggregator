@@ -25,7 +25,7 @@ class UserController extends Controller
         ];
         $user->save();
 
-        Cache::forget(md5('articles----' . $user->id)); // clear articles cache for this user
+        Cache::forget(md5('articles-----' . $user->id)); // clear articles cache for this user
 
         return response()->json($user);
     }

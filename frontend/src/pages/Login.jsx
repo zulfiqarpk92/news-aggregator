@@ -77,7 +77,6 @@ export default function Login() {
                 id="email"
                 label="Email Address"
                 name="email"
-                value="zulfiqar@g.com"
                 autoComplete="email"
                 autoFocus
                 error={!!formErrors?.email}
@@ -88,7 +87,6 @@ export default function Login() {
                 required
                 fullWidth
                 name="password"
-                value="12345678"
                 label="Password"
                 type="password"
                 id="password"

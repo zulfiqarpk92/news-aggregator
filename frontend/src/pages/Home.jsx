@@ -110,6 +110,7 @@ export default function Home() {
               </Grid>
               <Grid item xs={12} md={3}>
                 <TextField
+                  id="category"
                   label="Category"
                   variant="outlined"
                   select
@@ -127,6 +128,7 @@ export default function Home() {
               </Grid>
               <Grid item xs={12} md={3}>
                 <TextField
+                  id="source"
                   label="Source"
                   variant="outlined"
                   select

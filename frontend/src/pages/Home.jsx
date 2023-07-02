@@ -18,7 +18,6 @@ import { DatePicker } from "@mui/x-date-pickers";
 import useUsersStore from "../stores/users";
 import categoryOptions from "../categories";
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Home() {
@@ -26,6 +25,7 @@ export default function Home() {
 
   const [loading, setLoading] = useState(false);
   const [newsArticles, setNewsArticles] = useState([]);
+  const [filterText, setFilterText] = useState("");
   const [filterDate, setFilterDate] = useState(null);
   const [filterCategory, setFilterCategory] = useState("");
   const [filterSource, setFilterSource] = useState("");
@@ -33,12 +33,15 @@ export default function Home() {
   const getArticles = useCallback(async () => {
     setLoading(true);
     try {
-      if(currentUser){
-        api.defaults.headers.common["Authorization"] = `Bearer ${currentUser.access_token}`;
+      if (currentUser) {
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${currentUser.access_token}`;
       }
       const { data } = await api.get("/api/articles", {
         params: {
           filters: {
+            filterText,
             filterDate,
             filterCategory,
             filterSource,
@@ -50,11 +53,15 @@ export default function Home() {
       console.log(ex);
     }
     setLoading(false);
-  }, [filterDate, filterCategory, filterSource, currentUser]);
+  }, [filterText, filterDate, filterCategory, filterSource, currentUser]);
 
   useEffect(() => {
     getArticles();
   }, []);
+
+  const handleTextChange = (event) => {
+    setFilterText(event.target.value);
+  };
 
   const handleDateChange = (date) => {
     setFilterDate(date);
@@ -81,6 +88,15 @@ export default function Home() {
           <Paper variant="outlined" sx={{ my: { xs: 2 }, p: { xs: 2, md: 3 } }}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={3}>
+                <TextField
+                  label="Search keyword"
+                  variant="outlined"
+                  fullWidth
+                  value={filterText}
+                  onChange={handleTextChange}
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                   <DatePicker
                     label="Date"
@@ -88,6 +104,7 @@ export default function Home() {
                     value={filterDate}
                     onChange={handleDateChange}
                     fullWidth
+                    sx={{ width: "100%" }}
                   />
                 </LocalizationProvider>
               </Grid>
@@ -136,7 +153,6 @@ export default function Home() {
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
                 }}
               >
                 <Button variant="contained" onClick={filterResults}>
@@ -147,7 +163,9 @@ export default function Home() {
           </Paper>
         </Container>
         <Container maxWidth="md">
-          {currentUser && <Typography sx={{ my: 2 }}>Welcome {currentUser.name}</Typography>}
+          {currentUser && (
+            <Typography sx={{ my: 2 }}>Welcome {currentUser.name}</Typography>
+          )}
           <Grid container spacing={4}>
             {loading ? (
               <ArticlesSkeleton />

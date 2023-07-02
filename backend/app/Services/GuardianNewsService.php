@@ -23,6 +23,9 @@ class GuardianNewsService extends BaseNewsService
 
     public function params($filters)
     {
+        if(! empty($filters['text'])){
+            $this->queryParams['q'] = $filters['text'];
+        }
         if(! empty($filters['category'])){
             $map = $this->categoryMap;
             $categories = collect($filters['category'])->map(function($c) use ($map){
@@ -31,8 +34,7 @@ class GuardianNewsService extends BaseNewsService
             $this->queryParams['section'] = $categories[0];
         }
         if(! empty($filters['date'])){
-            $date = Carbon::parse($filters['date'])->format('Y-m-d');
-            $this->queryParams['from-date'] = $date;
+            $this->queryParams['from-date'] = $filters['date'];
         }
         return $this;
     }

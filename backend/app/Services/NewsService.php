@@ -24,12 +24,16 @@ class NewsService extends BaseNewsService
 
     public function params($filters)
     {
+        $filterText = $filters['filterText'] ?? '';
         $filterDate = $filters['filterDate'] ?? '';
         $filterCategory = $filters['filterCategory'] ?? '';
         $filterSource = $filters['filterSource'] ?? '';
-        $filtersApplied = $filterDate || $filterCategory || $filterSource;
+        $filtersApplied = $filterText || $filterDate || $filterCategory || $filterSource;
 
         if ($filtersApplied) {
+            if ($filterText) {
+                $this->filters['text'] = $filterText;
+            }
             if ($filterDate) {
                 $this->filters['date'] = $filterDate;
             }

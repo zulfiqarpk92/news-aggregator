@@ -21,9 +21,9 @@ abstract class BaseNewsService implements NewsServiceInterface
 
         $response = Http::get($this->endpoint, $params);
 
+        Log::debug($response->effectiveUri());
         if($response->failed())
         {
-            Log::error($response->effectiveUri());
             Log::error($response->body());
             return collect();
         }

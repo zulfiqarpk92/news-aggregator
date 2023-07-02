@@ -23,6 +23,9 @@ class NewsApiService extends BaseNewsService
 
     public function params($filters)
     {
+        if(! empty($filters['text'])){
+            $this->queryParams['q'] = $filters['text'];
+        }
         if(! empty($filters['category'])){
             $map = $this->categoryMap;
             $categories = collect($filters['category'])->map(function($c) use ($map){

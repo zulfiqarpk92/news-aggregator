@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\NewsService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -28,15 +29,20 @@ class ArticleController extends Controller
 
         $filters = $request->input('filters') ?: [];
 
+        $filterText = $filters['filterText'] ?? '';
         $filterDate = $filters['filterDate'] ?? '';
         $filterCategory = $filters['filterCategory'] ?? '';
         $filterSource = $filters['filterSource'] ?? '';
-        $filtersApplied = $filterDate || $filterCategory || $filterSource;
+        $filtersApplied = $filterText || $filterDate || $filterCategory || $filterSource;
+
+        if($filterDate){
+            $filterDate = Carbon::parse($filterDate)->format('Y-m-d');
+        }
 
         $articles = [];
 
         // Concatenate the filter values
-        $filterString = $filterDate . '-' . $filterCategory . '-' . $filterSource;
+        $filterString = $filterText . '-' . $filterDate . '-' . $filterCategory . '-' . $filterSource;
 
         // Generate a hash from the filter string
         $cacheKey = md5('articles-' . $filterString . '-' . $uniqueId);

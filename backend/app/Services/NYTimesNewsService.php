@@ -32,6 +32,9 @@ class NYTimesNewsService extends BaseNewsService implements NewsServiceInterface
     public function params($filters)
     {
         $fq = '';
+        if(! empty($filters['text'])){
+            $this->queryParams['q'] = $filters['text'];
+        }
         if(! empty($filters['category'])){
             $map = $this->categoryMap;
             $categories = collect($filters['category'])->map(function($c) use ($map){
@@ -40,8 +43,7 @@ class NYTimesNewsService extends BaseNewsService implements NewsServiceInterface
             $fq .= 'section_name:(' . implode($categories) . ')';
         }
         if(! empty($filters['date'])){
-            $date = Carbon::parse($filters['date'])->format('Y-m-d');
-            $fq .= ($fq ? ' AND ' : '') . 'pub_date:(' . $date . ')';
+            $fq .= ($fq ? ' AND ' : '') . 'pub_date:(' . $filters['date'] . ')';
         }
         if(! empty($fq)){
             $this->queryParams['fq'] = $fq;
